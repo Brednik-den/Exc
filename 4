@@ -1,0 +1,45 @@
+from abc import ABC, abstractmethod
+
+class Document(ABC):
+    @abstractmethod
+    def print(self):
+        pass
+
+    def prepare_for_printing(self):
+        print("Preparing document...")
+        self.print()
+
+
+class PDFDocument(Document):
+    def print(self):
+        print("Printing PDF document.")
+
+
+class WordDocument(Document):
+    def print(self):
+        print("Printing Word document.")
+
+
+class ExcelDocument(Document):
+    def print(self):
+        print("Printing Excel document.")
+
+
+class DocumentFactory:
+    @staticmethod
+    def create_document(doc_type: str) -> Document:
+        if doc_type.lower() == "pdf":
+            return PDFDocument()
+        elif doc_type.lower() == "word":
+            return WordDocument()
+        elif doc_type.lower() == "excel":
+            return ExcelDocument()
+        else:
+            raise ValueError(f"Unknown document type: {doc_type}")
+
+
+# Приклад використання:
+if __name__ == "__main__":
+    for doc_type in ["pdf", "word", "excel"]:
+        doc = DocumentFactory.create_document(doc_type)
+        doc.prepare_for_printing()
