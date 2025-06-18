@@ -1,0 +1,63 @@
+from abc import ABC, abstractmethod
+import math
+
+# Базовий клас Shape
+class Shape(ABC):
+    @abstractmethod
+    def calculate_area(self):
+        pass
+
+# Інтерфейс IDrawable
+class IDrawable(ABC):
+    @abstractmethod
+    def draw(self):
+        pass
+
+# Клас Circle, що наслідує Shape та реалізує IDrawable
+class Circle(Shape, IDrawable):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def calculate_area(self):
+        return math.pi * self.radius ** 2
+
+    def draw(self):
+        print(f"Drawing a Circle with radius {self.radius}")
+
+# Клас Square, що наслідує Shape та реалізує IDrawable
+class Square(Shape, IDrawable):
+    def __init__(self, side):
+        self.side = side
+
+    def calculate_area(self):
+        return self.side ** 2
+
+    def draw(self):
+        print(f"Drawing a Square with side {self.side}")
+
+# Клас Triangle, що наслідує Shape та реалізує IDrawable
+class Triangle(Shape, IDrawable):
+    def __init__(self, base, height):
+        self.base = base
+        self.height = height
+
+    def calculate_area(self):
+        return 0.5 * self.base * self.height
+
+    def draw(self):
+        print(f"Drawing a Triangle with base {self.base} and height {self.height}")
+
+# Демонстрація поліморфізму
+def main():
+    shapes = [
+        Circle(5),
+        Square(4),
+        Triangle(3, 6)
+    ]
+
+    for shape in shapes:
+        print(f"Area: {shape.calculate_area():.2f}")
+        shape.draw()
+
+if __name__ == "__main__":
+    main()
