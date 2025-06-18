@@ -1,0 +1,40 @@
+class SingletonMeta(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
+class Logger(metaclass=SingletonMeta):
+    def __init__(self):
+        self.logs = []
+
+    def log(self, message):
+        self.logs.append(message)
+        print(f"LOG: {message}")  # Для прикладу, лог виводимо на екран
+
+class InsufficientFundsException(Exception):
+    pass
+
+class BankAccount:
+    def __init__(self, accountNumber, balance=0):
+        self.accountNumber = accountNumber
+        self.balance = balance
+        self.logger = Logger()
+
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValueError("Deposit amount must be positive")
+        self.balance += amount
+        self.logger.log(f"Deposited {amount} to account {self.accountNumber}. New balance: {self.balance}")
+
+    def withdraw(self, amount):
+        if amount <= 0:
+            raise ValueError("Withdrawal amount must be positive")
+        if amount > self.balance:
+            self.logger.log(f"Attempted to withdraw {amount} from account {self.accountNumber} but insufficient funds.")
+            raise InsufficientFundsException("Insufficient funds for withdrawal")
+        self.balance -= amount
+        self.logger.log(f"Withdrew {amount} from account {self.accountNumber}. New balance: {self.balance}")
