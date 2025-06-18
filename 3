@@ -1,0 +1,57 @@
+using System;
+
+namespace ProductApp
+{
+    public class Product
+    {
+        public static int ProductCount { get; private set; } = 0;
+
+        public string Name { get; set; }
+
+        public Product(string name)
+        {
+            Name = name;
+            ProductCount++;
+        }
+
+        public virtual void DisplayInfo()
+        {
+            Console.WriteLine($"Product: {Name}");
+            Console.WriteLine($"Total products created: {ProductCount}");
+        }
+    }
+
+    public class ElectronicProduct : Product
+    {
+        public int WarrantyPeriod { get; set; } // у місяцях
+
+        public ElectronicProduct(string name, int warrantyPeriod)
+            : base(name)
+        {
+            WarrantyPeriod = warrantyPeriod;
+        }
+
+        public override void DisplayInfo()
+        {
+            base.DisplayInfo();
+            Console.WriteLine($"Warranty Period: {WarrantyPeriod} months");
+        }
+    }
+
+    public class ClothingProduct : Product
+    {
+        public string Size { get; set; }
+
+        public ClothingProduct(string name, string size)
+            : base(name)
+        {
+            Size = size;
+        }
+
+        public override void DisplayInfo()
+        {
+            base.DisplayInfo();
+            Console.WriteLine($"Size: {Size}");
+        }
+    }
+}
